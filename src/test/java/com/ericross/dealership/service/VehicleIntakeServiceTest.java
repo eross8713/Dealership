@@ -1,6 +1,6 @@
 package com.ericross.dealership.service;
 
-import com.ericross.dealership.clients.NHTSAProvider;
+import com.ericross.dealership.providers.NHTSAProvider;
 import com.ericross.dealership.dtos.VehicleCandidateDto;
 import com.ericross.dealership.dtos.VehicleIntakeRequest;
 import com.ericross.dealership.dtos.VehicleIntakeResponse;
@@ -22,6 +22,7 @@ import java.util.concurrent.Executors;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -162,15 +163,29 @@ public class VehicleIntakeServiceTest {
         when(vehicleRepository.save(any(CarEntity.class)))
                 .thenAnswer(invocation -> invocation.getArgument(0));
 
-        NHTSAProvider slowValidProvider = candidate -> {
-            try {
-                Thread.sleep(300);
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-                throw new RuntimeException(e);
-            }
-            return new VehicleValidationResult(true, "test reason", "test message");
-        };
+//        NHTSAProvider slowValidProvider = candidate -> {
+//            try {
+//                Thread.sleep(300);
+//            } catch (InterruptedException e) {
+//                Thread.currentThread().interrupt();
+//                throw new RuntimeException(e);
+//            }
+//            return new VehicleValidationResult(true, "test reason", "test message");
+//        };
+
+
+        NHTSAProvider slowValidProvider = mock(NHTSAProvider.class);
+
+        when(slowValidProvider.validate(any(VehicleCandidateDto.class)))
+                .thenAnswer(invocation -> {
+                    try {
+                        Thread.sleep(300);
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                        throw new RuntimeException(e);
+                    }
+                    return new VehicleValidationResult(true, "test reason", "test message");
+                });
 
         VehicleIntakeService service = new VehicleIntakeService(vehicleRepository, slowValidProvider, Executors.newFixedThreadPool(4));
 

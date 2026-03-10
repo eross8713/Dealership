@@ -1,6 +1,6 @@
 package com.ericross.dealership.service;
 
-import com.ericross.dealership.clients.NHTSAProvider;
+import com.ericross.dealership.providers.NHTSAProvider;
 import com.ericross.dealership.dtos.IntakeSummaryDto;
 import com.ericross.dealership.dtos.RejectedVehicleDto;
 import com.ericross.dealership.dtos.VehicleCandidateDto;

@@ -1,7 +1,9 @@
 package com.ericross.dealership.controllers;
 
+import com.ericross.dealership.dtos.IntakeSummaryDto;
 import com.ericross.dealership.dtos.VehicleCandidateDto;
 import com.ericross.dealership.dtos.VehicleIntakeRequest;
+import com.ericross.dealership.dtos.VehicleIntakeResponse;
 import com.ericross.dealership.service.VehicleIntakeService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -16,6 +18,8 @@ import com.ericross.dealership.testsupport.TestApplication;
 import java.math.BigDecimal;
 import java.util.List;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -38,7 +42,19 @@ public class VehicleIntakeControllerTest {
         var candidate = new VehicleCandidateDto("Camry", "Blue", "Toyota", 2024, new BigDecimal(32000.00));
         List<VehicleCandidateDto> candidates = List.of(candidate);
         var req = new VehicleIntakeRequest(candidates);
-        var result = mockMvc.perform(post("/vehicle/intake")
+
+        var summary = new IntakeSummaryDto(
+                1,                  // total
+                List.of(),          // accepted
+                List.of()           // rejected
+        );
+        var mockResponse = new VehicleIntakeResponse(summary);
+
+        when(carService.intakeVehicles(any(VehicleIntakeRequest.class)))
+                .thenReturn(mockResponse);
+
+
+        mockMvc.perform(post("/vehicle/intake")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(req)))
                 .andExpect(status().isOk())
@@ -51,8 +67,18 @@ public class VehicleIntakeControllerTest {
         var candidate = new VehicleCandidateDto("Camry", "Blue", "Toyota", 2024, new BigDecimal(32000.00));
         var candidate1 = new VehicleCandidateDto("Civic", "Black", "Honda", 2016, new BigDecimal(16000.00));
         List<VehicleCandidateDto> candidates = List.of(candidate, candidate1);
+
+        var summary = new IntakeSummaryDto(
+                2,                  // total
+                List.of(),          // accepted
+                List.of()           // rejected
+        );
+        var mockResponse = new VehicleIntakeResponse(summary);
+
+        when(carService.intakeVehicles(any(VehicleIntakeRequest.class)))
+                .thenReturn(mockResponse);
         var req = new VehicleIntakeRequest(candidates);
-        var result = mockMvc.perform(post("/vehicle/intake")
+        mockMvc.perform(post("/vehicle/intake")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(req)))
                 .andExpect(status().isOk())
@@ -65,8 +91,18 @@ public class VehicleIntakeControllerTest {
         var candidate = new VehicleCandidateDto("Camry", "Blue", "Toyota", 2024, new BigDecimal(32000.00));
         var candidate1 = new VehicleCandidateDto("Civic", "Black", "Honda", 2016, new BigDecimal(16000.00));
         List<VehicleCandidateDto> candidates = List.of(candidate, candidate1);
+
+        var summary = new IntakeSummaryDto(
+                2,                  // total
+                List.of(),          // accepted
+                List.of()           // rejected
+        );
+        var mockResponse = new VehicleIntakeResponse(summary);
+
+        when(carService.intakeVehicles(any(VehicleIntakeRequest.class)))
+                .thenReturn(mockResponse);
         var req = new VehicleIntakeRequest(candidates);
-        var result = mockMvc.perform(post("/vehicle/intake")
+        mockMvc.perform(post("/vehicle/intake")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(req)))
                 .andExpect(status().isOk())
