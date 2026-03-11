@@ -23,11 +23,6 @@ public class VehicleIntakeController {
     public ResponseEntity<VehicleIntakeResponse> intakeVehicles(@Valid @RequestBody VehicleIntakeRequest req) {
 
         return ResponseEntity.ok(vehicleIntakeService.intakeVehicles(req));
-//        int total = req.getCandidates().size();
-//
-//        return ResponseEntity.ok(new VehicleIntakeResponse(new IntakeSummaryDto(total, new ArrayList<String>()
-//                , new ArrayList<String>())));
-
 
     }
 

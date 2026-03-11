@@ -1,13 +1,13 @@
 services:
   postgres:
     image: postgres:16
-    container_name: dealership-postgres
+    container_name: dealership-postgres-app
     environment:
       POSTGRES_DB: dealership
       POSTGRES_USER: dealership
       POSTGRES_PASSWORD: dealership
     ports:
-      - "55432:5432"
+      - "55433:5432"
     volumes:
       - dealership_pgdata:/var/lib/postgresql/data
     healthcheck:
@@ -16,5 +16,15 @@ services:
       timeout: 3s
       retries: 20
 
+  dealership-app:
+    build: .
+    depends_on:
+      - postgres
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/dealership
+      SPRING_DATASOURCE_USERNAME: dealership
+      SPRING_DATASOURCE_PASSWORD: dealership
 volumes:
   dealership_pgdata:

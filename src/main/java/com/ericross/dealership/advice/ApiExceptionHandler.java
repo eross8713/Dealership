@@ -1,12 +1,15 @@
-package com.ericross.dealership.controllers;
+package com.ericross.dealership.advice;
 
 import com.ericross.dealership.dtos.ErrorDto;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolationException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Instant;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -16,10 +19,10 @@ public class ApiExceptionHandler {
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ErrorDto> handle(IllegalArgumentException ex) {
         return  ResponseEntity.badRequest().body(new ErrorDto(
-                java.time.OffsetDateTime.now(),
+                Instant.now(),
                 400,
-                "error: " + ex.getMessage().toString(),
-                java.util.UUID.randomUUID().toString()
+                ex.getMessage().toString(),
+                null
         ));
     }
 
@@ -38,10 +41,10 @@ public class ApiExceptionHandler {
         String bodyStr = body.toString();
 
         return  ResponseEntity.badRequest().body(new ErrorDto(
-                java.time.OffsetDateTime.now(),
+                Instant.now(),
                 400,
                 bodyStr,
-                java.util.UUID.randomUUID().toString()
+                null
         ));
 
     }
@@ -61,10 +64,23 @@ public class ApiExceptionHandler {
 
 
         return  ResponseEntity.badRequest().body(new ErrorDto(
-                java.time.OffsetDateTime.now(),
+                Instant.now(),
                 400,
                 bodyStr,
-                java.util.UUID.randomUUID().toString()
+                null
         ));
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorDto> handleException(Exception ex, HttpServletRequest request) {
+
+        ErrorDto error = new ErrorDto(
+                Instant.now(),
+                HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                ex.getMessage(),
+                request.getRequestURI()
+        );
+
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
     }
 }

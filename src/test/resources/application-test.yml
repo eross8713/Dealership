@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:55432/dealership
+    url: jdbc:postgresql://localhost:55433/dealership
     username: dealership
     password: dealership
 

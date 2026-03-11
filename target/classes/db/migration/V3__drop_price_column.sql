@@ -1,2 +1,0 @@
-ALTER TABLE cars DROP COLUMN IF EXISTS price;
-

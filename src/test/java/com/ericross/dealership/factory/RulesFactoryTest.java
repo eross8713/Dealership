@@ -1,7 +1,6 @@
 package com.ericross.dealership.factory;
 
 import org.junit.jupiter.api.Test;
-import com.ericross.dealership.rules.ModelRules;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
