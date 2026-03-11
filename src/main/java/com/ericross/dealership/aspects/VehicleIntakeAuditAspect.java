@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class VehicleIntakeAuditAspect {
 
-    @Around("@annotation(VehicleIntakeAudit)")
+    @Around("@annotation(vehicleIntakeAudit)")
     public Object around(ProceedingJoinPoint pjp, VehicleIntakeAudit vehicleIntakeAudit) throws Throwable {
         Object[] args = pjp.getArgs();
 
