@@ -1,7 +1,6 @@
 package com.ericross.dealership.providers;
 
 
-import com.ericross.dealership.clients.NHTSAClient;
 import com.ericross.dealership.clients.NHTSAHttpClient;
 import com.ericross.dealership.dtos.VehicleCandidateDto;
 import com.ericross.dealership.dtos.VehicleValidationResult;

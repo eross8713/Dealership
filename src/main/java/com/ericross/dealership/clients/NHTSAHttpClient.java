@@ -2,6 +2,7 @@ package com.ericross.dealership.clients;
 
 import com.ericross.dealership.dtos.NHTSAResponse;
 import com.ericross.dealership.dtos.Result;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;

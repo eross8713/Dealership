@@ -26,5 +26,11 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/dealership
       SPRING_DATASOURCE_USERNAME: dealership
       SPRING_DATASOURCE_PASSWORD: dealership
+      SPRING_DATA_REDIS_HOST: redis
+      SPRING_DATA_REDIS_PORT: 6379
+  redis:
+    image: redis:7
+    ports:
+      - "6379:6379"
 volumes:
   dealership_pgdata:
