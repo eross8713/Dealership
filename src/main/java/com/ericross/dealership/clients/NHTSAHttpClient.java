@@ -2,11 +2,9 @@ package com.ericross.dealership.clients;
 
 import com.ericross.dealership.dtos.NHTSAResponse;
 import com.ericross.dealership.dtos.Result;
-import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +27,10 @@ public class NHTSAHttpClient implements NHTSAClient {
                 .retrieve()
                 .bodyToMono(NHTSAResponse.class);
 
+
         NHTSAResponse resp = response.block();
+        System.out.println("Here are the results from the NHTSA API call: " + resp);
+
         List<String> models = new ArrayList<>();
         if (resp != null && !resp.getResults().isEmpty()) {
             for(Result result: resp.getResults()) {
