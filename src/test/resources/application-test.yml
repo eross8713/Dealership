@@ -1,18 +1,7 @@
 spring:
-  datasource:
-    url: jdbc:postgresql://localhost:55433/dealership
-    username: dealership
-    password: dealership
-
   flyway:
     enabled: true
 
   jpa:
     hibernate:
       ddl-auto: validate
-
-  data:
-    redis:
-      host: localhost
-      port: 6379
-

@@ -4,6 +4,7 @@ import com.ericross.dealership.clients.NHTSAClient;
 import com.ericross.dealership.clients.NHTSAHttpClient;
 import com.ericross.dealership.dtos.VehicleCandidateDto;
 import com.ericross.dealership.dtos.VehicleValidationResult;
+import com.ericross.dealership.service.NHTSALookupService;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 
@@ -11,15 +12,13 @@ import java.util.List;
 
 @Component
 public class NHTSAProvider {
-
-   private final NHTSAHttpClient nhtsaHttpClient;
-
-   public NHTSAProvider(NHTSAHttpClient nhtsaHttpClient) {
-      this.nhtsaHttpClient = nhtsaHttpClient;
+    private final NHTSALookupService nhtsaLookupService;
+   public NHTSAProvider(NHTSALookupService nhtsaLookupService) {
+      this.nhtsaLookupService = nhtsaLookupService;
    }
 
    public VehicleValidationResult validate(VehicleCandidateDto candidate) {
-        List<String> models = getModelsForMakeAndYear(candidate.getMake(), candidate.getYear());
+        List<String> models = nhtsaLookupService.getModelsForMakeAndYear(candidate.getMake(), candidate.getYear());
 
         models = models.stream().map(String::toLowerCase).toList();
         if(models.contains(candidate.getModel().toLowerCase())){
@@ -30,12 +29,6 @@ public class NHTSAProvider {
         }
 
    }
-    @Cacheable(
-            value = "nhtsa-models",
-            key = "#make + ':' + #year"
-    )
-    public List<String> getModelsForMakeAndYear(String make, Integer year) {
-       return nhtsaHttpClient.getModelsForMakeAndYear(make, year);
-   }
+
 
 }

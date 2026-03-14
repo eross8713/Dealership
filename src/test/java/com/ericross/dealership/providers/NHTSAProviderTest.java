@@ -1,9 +1,9 @@
 package com.ericross.dealership.providers;
 
 
-import com.ericross.dealership.clients.NHTSAHttpClient;
 import com.ericross.dealership.dtos.VehicleCandidateDto;
 import com.ericross.dealership.dtos.VehicleValidationResult;
+import com.ericross.dealership.service.NHTSALookupService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -20,7 +20,7 @@ import static org.mockito.Mockito.when;
 class NHTSAProviderTest {
 
     @Mock
-    private NHTSAHttpClient nhtsaHttpClient;
+    private NHTSALookupService nhtsaLookupService;
 
     @InjectMocks
     private NHTSAProvider provider;
@@ -36,7 +36,7 @@ class NHTSAProviderTest {
                 new BigDecimal("25000.00")
         );
 
-        when(nhtsaHttpClient.getModelsForMakeAndYear("Toyota", 2022))
+        when(nhtsaLookupService.getModelsForMakeAndYear("Toyota", 2022))
                 .thenReturn(List.of("Camry", "Corolla", "Highlander"));
 
         VehicleValidationResult result = provider.validate(candidate);

@@ -2,15 +2,18 @@ package com.ericross.dealership.integration;
 
 import com.ericross.dealership.entity.CarEntity;
 import com.ericross.dealership.repository.VehicleRepository;
+import com.ericross.dealership.testsupport.ContainersConfig;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 @ActiveProfiles("test")
+@Import(ContainersConfig.class)
 public class CarRepositoryIT {
 
     @Autowired

@@ -2,6 +2,8 @@ package com.ericross.dealership.clients;
 
 import com.ericross.dealership.dtos.NHTSAResponse;
 import com.ericross.dealership.dtos.Result;
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -13,13 +15,18 @@ import java.util.List;
 public class NHTSAHttpClient implements NHTSAClient {
 
     private final WebClient webClient;
+    private final Counter nhtsaApiCallCounter;
 
-    public NHTSAHttpClient(WebClient nhtsaWebClient) {
+    public NHTSAHttpClient(WebClient nhtsaWebClient, MeterRegistry meterRegistry) {
         this.webClient = nhtsaWebClient;
+        this.nhtsaApiCallCounter = Counter.builder("dealearhip.nhtsa.api.calls")
+                .description("Number of calls made to the NHTSA API")
+                .register(meterRegistry);
     }
 
     @Override
     public List<String> getModelsForMakeAndYear(String make, Integer year) {
+        nhtsaApiCallCounter.increment();
         Mono<NHTSAResponse> response = webClient.get()
                 .uri(uriBuilder -> uriBuilder
                         .path("/GetModelsForMakeYear/make/{make}/modelyear/{year}")

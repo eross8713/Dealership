@@ -18,3 +18,21 @@ logging:
   level:
     org.flywaydb: DEBUG
     org.springframework.jdbc.datasource: DEBUG
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,env,loggers,threaddump
+  endpoint:
+    health:
+      show-details: always
+  info:
+    env:
+      enabled: true
+
+info:
+  app:
+    name: Dealership
+    version: 0.0.1
+    description: Senior backend POC for dealership inventory and intake workflows
