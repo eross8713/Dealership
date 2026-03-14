@@ -8,6 +8,8 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
+
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +35,8 @@ public class NHTSAHttpClient implements NHTSAClient {
                         .queryParam("format", "json")
                         .build(make, year))
                 .retrieve()
-                .bodyToMono(NHTSAResponse.class);
+                .bodyToMono(NHTSAResponse.class)
+                .timeout(Duration.ofSeconds(3));
 
 
         NHTSAResponse resp = response.block();
