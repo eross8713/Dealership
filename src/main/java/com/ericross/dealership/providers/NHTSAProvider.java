@@ -1,11 +1,8 @@
 package com.ericross.dealership.providers;
 
-import com.ericross.dealership.clients.NHTSAClient;
-import com.ericross.dealership.clients.NHTSAHttpClient;
 import com.ericross.dealership.dtos.VehicleCandidateDto;
 import com.ericross.dealership.dtos.VehicleValidationResult;
 import com.ericross.dealership.service.NHTSALookupService;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
